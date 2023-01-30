@@ -1,0 +1,2 @@
+# DatalistSelectEx
+datalist型テキストボックスをSELECTボックスに近い感覚で扱えるようにするライブラリ
