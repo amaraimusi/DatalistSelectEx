@@ -7,11 +7,28 @@ $(()=>{
     datalistSelectEx1 = new DatalistSelectEx(testList, {
         'inp_id_xid':'animal_id',
         'inp_name_xid':'animal_name',
+        'clear_xid':'animal_id_clear',
+        'err_xid':'animal_id_err',
         'datalist_xid':'animal_dlist',
-        'err_xid':'animal_id_err'
     });
     
 });
+
+
+// Submitボタン押下アクション
+function onSubmit1(){
+    
+    $('#valid_err_msg').html('');
+    let err_msg = datalistSelectEx1.checkError();
+    
+    if(err_msg){
+        $('#valid_err_msg').html(err_msg);
+        return false;
+    }
+
+    return true;
+    
+}
 
 function _getTestList(){
     let testList = {

@@ -1,7 +1,7 @@
 /**
  * datalist型テキストボックスをSELECTボックスに近い感覚で扱えるようにするクラス
  * @since 2023-1-30
- * @version 1.0.0
+ * @version 1.1.0
 */
 class DatalistSelectEx{
 	
@@ -10,35 +10,47 @@ class DatalistSelectEx{
 	* @param {}
 	*  - string inp_id_xid ○○_idのinput要素のid属性
 	*  - string inp_name_xid name用のinput要素のid属性
-	*  - string datalist_xid datalist要素のid属性
+	*  - string clear_xid クリアボタン要素のid属性
 	*  - string err_xid エラー表示要素(<span>や<div>など)のid属性
+	*  - string datalist_xid datalist要素のid属性
+	*  - int def_value 空時の値。未セットなら0
 	*/
 	constructor(p_dataList, param){
-        
-        if(param == null) throw Error('引数のparamが未セットになっています');
-        
-		if(param.def_value == null) param.def_value = 0;
-        
+		
+		if(param == null) throw Error('引数のparamが未セットになっています');
+		
+		if(param.def_value == undefined) param.def_value = 0;
+		
 		if(param.inp_id_xid == null) throw Error('引数paramのinp_id_xidが未セットです。');
 		if(param.inp_name_xid == null) throw Error('引数paramのinp_name_xidが未セットです。');
+		if(param.clear_xid == null) throw Error('引数paramのclear_xidが未セットです。');
+		if(param.err_xid == null) throw Error('引数paramのerr_xidが未セットです。');
 		if(param.datalist_xid == null) throw Error('引数paramのdatalist_xidが未セットです。');
-        if(param.err_xid == null) throw Error('引数paramのerr_xidが未セットです。');
 		this.param = param;
 
 		this.jqInpId = $('#' + param.inp_id_xid);
 		this.jqInpName = $('#' + param.inp_name_xid);
+		this.jqClear = $('#' + param.clear_xid);
+		this.jqErr = $('#' + param.err_xid);
 		this.jqDatalist = $('#' + param.datalist_xid);
-        this.jqErr = $('#' + param.err_xid);
 		
 		if(this.jqInpId[0] == null) throw Error('引数：inp_id_xidの要素を取得できませんでした。');
 		if(this.jqInpName[0] == null) throw Error('引数：inp_name_xidの要素を取得できませんでした。');
+		if(this.jqClear[0] == null) throw Error('引数：err_clearの要素を取得できませんでした。');
+		if(this.jqErr[0] == null) throw Error('引数：err_xidの要素を取得できませんでした。');
 		if(this.jqDatalist[0] == null) throw Error('引数：datalist_xidの要素を取得できませんでした。');
-        if(this.jqErr[0] == null) throw Error('引数：err_xidの要素を取得できませんでした。');
 
 		this.jqInpName.change(evt=>{
 			// テキストボックスのchangeイベント
 			let tbox = $(evt.currentTarget);
 			this.onChange(tbox);
+		});
+		
+		
+		this.jqClear.click(evt=>{
+			// クリアボタンのclickイベント
+			let btn = $(evt.currentTarget);
+			this.clickClearBtn(btn);
 		});
 
 		this.protDataList = null;
@@ -97,7 +109,7 @@ class DatalistSelectEx{
 		let name = tbox.val();
 		
 		// dataListからnameに紐づくidとエラーメッセージを取得する
-        let res = this._findIdFromDataList(name);
+		let res = this._findIdFromDataList(name);
 		
 		this.jqErr.html(res.err_msg);
 		if(res.err_msg == '') this.jqInpId.val(res.id);
@@ -108,8 +120,8 @@ class DatalistSelectEx{
 	
 		
 	// dataListからnameに紐づくidとエラーメッセージを取得する
-    _findIdFromDataList(name){
-		let res = {'id':0, 'err_msg':''};
+	_findIdFromDataList(name){
+		let res = {'id':this.param.def_value, 'err_msg':''};
 		if(name=='' || name==null) return res;
 		
 		let name1 = name.trim();
@@ -168,6 +180,26 @@ class DatalistSelectEx{
 		if(name == null) name = '';
 		return name;
 	}
+	
+	// クリアボタンのclickイベント
+	clickClearBtn(btn){
+		this.jqInpId.val(this.param.def_value);
+		this.jqInpName.val('');
+	}
+    
+    /**
+     * エラーチェックをする
+     * @return string エラーメッセージ
+     */
+    checkError(){
+        
+        let name = this.jqInpName.val();
+        
+        // dataListからnameに紐づくidとエラーメッセージを取得する
+        let res = this._findIdFromDataList(name);
+        
+        return res.err_msg;
+    }
 	
 	
 }

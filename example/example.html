@@ -8,11 +8,11 @@
 	<title>DatalistSelectEx | ワクガンス</title>
 	<link rel='shortcut icon' href='/home/images/favicon.ico' />
 	
-	<link href="css/bootstrap-4.3.1-dist/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-4.3.1-dist/font/css/open-iconic.min.css" rel="stylesheet">
+    <link href="css/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-5.0.2-dist/font/css/open-iconic.min.css" rel="stylesheet">
 	<link href="css/common2.css" rel="stylesheet">
 	<script src="js/jquery3.js"></script>	<!-- jquery-3.3.1.min.js -->
-	<script src="js/bootstrap-4.3.1-dist/bootstrap.bundle.min.js"></script>
+    <script src="css/bootstrap-5.0.2-dist/js/bootstrap.bundle.js"></script>
 	<script src="js/DatalistSelectEx.js"></script>
 	<script src="js/script.js"></script>
 
@@ -23,11 +23,27 @@
 
 
 <h2>Demo</h2>
-<label for="animal_id">絶滅危惧種リスト:</label>
-<input type="text" id="animal_id" name="animal_id"  value="99"/>
-<input list="animal_dlist" id="animal_name" name="animal_name" value=""><span id="animal_id_err" class="text-danger"></span>
-<datalist id="animal_dlist" ></datalist>
-
+<div class="row">
+    <div class="col-6">
+	   <label for="animal_id">絶滅危惧種リスト:</label>
+	</div>
+	
+	<form action="#">
+		<div class="col-6">
+			<div class="input-group">
+				<input type="text" id="animal_id" name="animal_id"  value="99"/>
+				<input list="animal_dlist" id="animal_name" name="animal_name" value="" class="form-control"> 
+				<div class="input-group-append">
+				    <button id="animal_id_clear" class="btn btn-outline-secondary" type="button">×</button>
+				</div>
+				<span id="animal_id_err" class="text-danger"></span>
+	            <datalist id="animal_dlist" ></datalist>
+			</div>
+		</div>
+		<button id="submit_btn" class="btn btn-warning btn-lg" onclick="return onSubmit1()">Submit</button>
+		<div class="text-danger" id="valid_err_msg"></div>
+	</form>
+</div>
 
 
 <div class="yohaku"></div>
